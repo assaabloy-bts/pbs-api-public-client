@@ -54,7 +54,7 @@ public class PbsClientTests
         Assert.Equal(0, result.StartRow);
         Assert.True(result.TotalRows > 0);
 
-        var mfg = result.Data[0];
+        var mfg = result.Data.First();
         Assert.NotNull(mfg.Name);
         Assert.NotNull(mfg.Abbr);
         Assert.True(mfg.ManufacturerId > 0);
@@ -126,7 +126,7 @@ public class PbsClientTests
         Assert.Equal(0, result.StartRow);
         Assert.True(result.TotalRows > 0);
 
-        var item = result.Data[0];
+        var item = result.Data.First();
         Assert.True(item.Xref > 0);
         Assert.NotNull(item.Manufacturer);
         Assert.NotNull(item.PartNumber);
@@ -166,7 +166,7 @@ public class PbsClientTests
         Assert.Equal(0, result.StartRow);
         Assert.True(result.TotalRows > 0);
 
-        var attr = result.Data[0];
+        var attr = result.Data.First();
         Assert.True(attr.Xref > 0);
         Assert.NotNull(attr.Manufacturer);
         Assert.NotNull(attr.Type);
@@ -214,7 +214,7 @@ public class PbsClientTests
 
         if (result.Data.Count > 0)
         {
-            var opt = result.Data[0];
+            var opt = result.Data.First();
             Assert.True(opt.Xref > 0);
             Assert.NotNull(opt.Manufacturer);
             Assert.NotNull(opt.PrintCode);
@@ -273,7 +273,7 @@ public class PbsClientTests
         Assert.Equal(0, result.StartRow);
         Assert.True(result.TotalRows > 0);
 
-        var opt = result.Data[0];
+        var opt = result.Data.First();
         Assert.True(opt.Xref > 0);
         Assert.NotNull(opt.Manufacturer);
         Assert.NotNull(opt.PrintCode);
@@ -290,7 +290,7 @@ public class PbsClientTests
         var options = await Client!.GetHardwareOptionsAsync(
             _manufacturerAbbr!, endRow: 1, startRow: 0);
         Assert.NotEmpty(options.Data);
-        var optXref = options.Data[0].Xref;
+        var optXref = options.Data.First().Xref;
 
         var result = await Client!.GetHardwareOptionByIdAsync(optXref);
 
@@ -335,7 +335,7 @@ public class PbsClientTests
         var pb = result.First();
         Assert.NotNull(pb.Manufacturer);
         Assert.NotNull(pb.Description);
-        Assert.NotNull(pb.EffectiveDate);
+        Assert.True(pb.EffectiveDate != default);
     }
 
     [SkippableFact]
@@ -355,6 +355,6 @@ public class PbsClientTests
         var pb = result.First();
         Assert.NotNull(pb.Manufacturer);
         Assert.NotNull(pb.Description);
-        Assert.NotNull(pb.EffectiveDate);
+        Assert.True(pb.EffectiveDate != default);
     }
 }

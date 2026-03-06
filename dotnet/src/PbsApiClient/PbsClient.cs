@@ -67,7 +67,7 @@ public class PbsClient
         string? query = null, string? sort = null, long? startRow = null,
         CancellationToken cancellationToken = default)
     {
-        return _apiClient.GetHardwareItemsAsync(manufacturerId, attributeXrefs, xref, endRow,
+        return _apiClient.GetHardwareItemsAsync(attributeXrefs, manufacturerId, xref, endRow,
             hardwareType, productLine, query, sort, startRow, cancellationToken);
     }
 

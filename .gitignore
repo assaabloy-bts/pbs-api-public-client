@@ -1,0 +1,24 @@
+# Java
+java/target/
+java/.idea/
+java/*.iml
+java/.classpath
+java/.project
+java/.settings/
+
+# .NET
+dotnet/**/bin/
+dotnet/**/obj/
+dotnet/.vs/
+dotnet/*.user
+dotnet/**/*.nupkg
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo

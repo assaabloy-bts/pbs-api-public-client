@@ -1,0 +1,1716 @@
+---
+openapi: 3.1.0
+components:
+  schemas:
+    Asset:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        title:
+          type: string
+        mimeType:
+          type: string
+        url:
+          type: string
+          format: uri
+    Attribute:
+      type: object
+      required:
+      - xref
+      - manufacturer
+      - type
+      - printCode
+      - printDescription
+      properties:
+        xref:
+          type: integer
+          format: int64
+        manufacturer:
+          type: string
+        type:
+          type: string
+        printCode:
+          type: string
+        printDescription:
+          type: string
+        uom:
+          $ref: "#/components/schemas/UOM"
+        price:
+          $ref: "#/components/schemas/Price"
+        preps:
+          type: array
+          items:
+            $ref: "#/components/schemas/Prep"
+        numCylinders:
+          type: integer
+          format: int32
+        ansi:
+          type: string
+        grade:
+          type: string
+        electrical:
+          type: boolean
+        co2e:
+          type: integer
+          format: int32
+        embodiedCarbon:
+          type: integer
+          format: int32
+        energyInUse:
+          type: integer
+          format: int32
+        recyclability:
+          type: integer
+          format: int32
+        environmentalManagementSystem:
+          type: string
+        referenceServiceLife:
+          type: string
+        fire:
+          type: integer
+          format: int32
+        smoke:
+          type: integer
+          format: int32
+        stc:
+          type: integer
+          format: int32
+    DescriptionAndPrices:
+      type: object
+      properties:
+        partNumber:
+          type: string
+        orderDescription:
+          type: string
+        description:
+          type: string
+        price:
+          type: array
+          items:
+            $ref: "#/components/schemas/Price"
+    Error:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    HardwareAttributes:
+      type: object
+      properties:
+        startRow:
+          type: integer
+          format: int64
+        endRow:
+          type: integer
+          format: int64
+        totalRows:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Attribute"
+    HardwareItem:
+      type: object
+      properties:
+        xref:
+          type: integer
+          format: int64
+        manufacturer:
+          type: string
+        productLine:
+          type: string
+        type:
+          type: string
+        typeDescription:
+          type: string
+        subTypeDescription:
+          type: string
+        partNumber:
+          type: string
+        orderDescription:
+          type: string
+        numCylinders:
+          type: integer
+          format: int32
+        deadLock:
+          type: boolean
+        assets:
+          type: array
+          items:
+            $ref: "#/components/schemas/Asset"
+        weight:
+          type: number
+        price:
+          type: array
+          items:
+            $ref: "#/components/schemas/Price"
+        attributes:
+          type: array
+          items:
+            $ref: "#/components/schemas/Attribute"
+        preps:
+          type: array
+          items:
+            $ref: "#/components/schemas/Prep"
+    HardwareItems:
+      type: object
+      properties:
+        startRow:
+          type: integer
+          format: int64
+        endRow:
+          type: integer
+          format: int64
+        totalRows:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/HardwareItem"
+    HardwareMatch:
+      type: object
+      required:
+      - partNumber
+      - orderDescription
+      properties:
+        partNumber:
+          type: string
+        orderDescription:
+          type: string
+        price:
+          $ref: "#/components/schemas/Price"
+        exactMatch:
+          type: boolean
+        matchScore:
+          type: number
+          format: float
+        xref:
+          type: integer
+          format: int64
+        optionXrefs:
+          type: array
+          items:
+            type: integer
+            format: int64
+        hardwareItem:
+          $ref: "#/components/schemas/HardwareItem"
+    HardwareOption:
+      type: object
+      required:
+      - xref
+      - manufacturer
+      - type
+      - printCode
+      - printDescription
+      properties:
+        xref:
+          type: integer
+          format: int64
+        manufacturer:
+          type: string
+        type:
+          type: string
+        printCode:
+          type: string
+        printDescription:
+          type: string
+        uom:
+          $ref: "#/components/schemas/UOM"
+        price:
+          type: array
+          items:
+            $ref: "#/components/schemas/Price"
+        preps:
+          type: array
+          items:
+            $ref: "#/components/schemas/Prep"
+        numCylinders:
+          type: integer
+          format: int32
+        ansi:
+          type: string
+        grade:
+          type: string
+        electrical:
+          type: boolean
+        co2e:
+          type: integer
+          format: int32
+        embodiedCarbon:
+          type: integer
+          format: int32
+        energyInUse:
+          type: integer
+          format: int32
+        recyclability:
+          type: integer
+          format: int32
+        environmentalManagementSystem:
+          type: string
+        referenceServiceLife:
+          type: string
+        fire:
+          type: integer
+          format: int32
+        smoke:
+          type: integer
+          format: int32
+        stc:
+          type: integer
+          format: int32
+        productLines:
+          type: array
+          items:
+            type: string
+    HardwareOptions:
+      type: object
+      properties:
+        startRow:
+          type: integer
+          format: int64
+        endRow:
+          type: integer
+          format: int64
+        totalRows:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/HardwareOption"
+    HdwStdAlternate:
+      type: object
+      properties:
+        baseVendorName:
+          type: string
+        baseHdwStdId:
+          type: integer
+          format: int64
+        hdwStdId:
+          type: integer
+          format: int64
+        attr1Id:
+          type: integer
+          format: int64
+        attr2Id:
+          type: integer
+          format: int64
+        attr3Id:
+          type: integer
+          format: int64
+        attr4Id:
+          type: integer
+          format: int64
+        attr5Id:
+          type: integer
+          format: int64
+        attr6Id:
+          type: integer
+          format: int64
+        finish:
+          type: string
+        active:
+          type: boolean
+        vendorMaterialId:
+          type: integer
+          format: int64
+        vendorName:
+          type: string
+        priceBookId:
+          type: integer
+          format: int64
+        description:
+          type: string
+        effectiveDate:
+          $ref: "#/components/schemas/LocalDate"
+        baseFinish:
+          type: string
+        altFinish:
+          type: string
+        baseHdwPrintDescription:
+          type: string
+        baseHdwDescription:
+          type: string
+        baseHdwPrice:
+          type: number
+        altHdwPrintDescription:
+          type: string
+        altHdwDescription:
+          type: string
+        altHdwPrice:
+          type: number
+    HdwTypeEnum:
+      type: string
+      enum:
+      - GF
+      - HI
+      - HA
+      - HC
+      - SL
+      - TP
+      - PV
+      - PT
+      - DL
+      - BO
+      - MU
+      - LO
+      - FN
+      - EE
+      - ED
+      - ET
+      - CY
+      - ES
+      - EM
+      - EL
+      - PP
+      - CO
+      - OH
+      - CL
+      - DO
+      - KP
+      - ST
+      - TH
+      - GA
+      - DB
+      - SW
+      - AS
+      - SI
+      - EA
+      - EC
+      - PS
+      - TA
+      - OT
+      - LK
+      - LL
+      - GL
+      - FE
+      - VD
+      - CG
+      - WP
+      - FM
+      - SG
+      - MI
+    LocalDate:
+      type: string
+      format: date
+      examples:
+      - 2022-03-10
+    Manufacturer:
+      type: object
+      required:
+      - manufacturerId
+      - type
+      - name
+      - abbr
+      properties:
+        manufacturerId:
+          type: integer
+          format: int64
+        type:
+          type: string
+        name:
+          type: string
+        address1:
+          type: string
+        address2:
+          type: string
+        address3:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+        country:
+          type: string
+        phone:
+          type: string
+        fax:
+          type: string
+        email:
+          type: string
+        webUrl:
+          type: string
+          format: uri
+        businessUnit:
+          type: string
+        abbr:
+          type: string
+    ManufacturerType:
+      type: string
+      enum:
+      - HM
+      - DFM
+    Manufacturers:
+      type: object
+      properties:
+        startRow:
+          type: integer
+          format: int64
+        endRow:
+          type: integer
+          format: int64
+        totalRows:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Manufacturer"
+    Prep:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        type:
+          $ref: "#/components/schemas/TypeEnum"
+        code:
+          type: string
+        description:
+          type: string
+    Price:
+      type: object
+      properties:
+        priceBook:
+          type: string
+        effectiveDate:
+          $ref: "#/components/schemas/LocalDate"
+        effective:
+          type: boolean
+        listPrice:
+          type: number
+        price:
+          type: number
+        currency:
+          type: string
+    PriceBook:
+      type: object
+      properties:
+        manufacturer:
+          type: string
+        description:
+          type: string
+        effectiveDate:
+          $ref: "#/components/schemas/LocalDate"
+    PricedHardwareItem:
+      type: object
+      properties:
+        hdwStdId:
+          type: integer
+          format: int64
+        hdwXrefId:
+          type: integer
+          format: int64
+        hdwLineId:
+          type: integer
+          format: int64
+        vendorMaterialId:
+          type: integer
+          format: int64
+        priceBookId:
+          type: integer
+          format: int64
+        hdwTypeId:
+          type: string
+        printDescription:
+          type: string
+        orderDescription:
+          type: string
+        description:
+          type: string
+        finish:
+          type: string
+        listPrice:
+          type: number
+        price:
+          type: number
+        basePrice:
+          type: number
+        specialNet:
+          type: boolean
+        specialNetPrice:
+          type: number
+        uom:
+          type: integer
+          format: int64
+        sizeString:
+          type: string
+        cylinders:
+          type: integer
+          format: int32
+        deadlock:
+          type: boolean
+        electric:
+          type: boolean
+        handed:
+          type: boolean
+        showOpeningSize:
+          type: boolean
+        doorPrep1Id:
+          type: integer
+          format: int64
+        doorPrep2Id:
+          type: integer
+          format: int64
+        framePrep1Id:
+          type: integer
+          format: int64
+        framePrep2Id:
+          type: integer
+          format: int64
+        inactivePrepId:
+          type: integer
+          format: int64
+        modifiers:
+          type: array
+          items:
+            $ref: "#/components/schemas/PricedModifier"
+    PricedModifier:
+      type: object
+      properties:
+        hdwAttrId:
+          type: integer
+          format: int64
+        hdwXrefId:
+          type: integer
+          format: int64
+        vendorMaterialId:
+          type: integer
+          format: int64
+        priceBookId:
+          type: integer
+          format: int64
+        printCode:
+          type: string
+        printDescription:
+          type: string
+        orderCode:
+          type: string
+        orderDescription:
+          type: string
+        price:
+          type: number
+        specialNet:
+          type: boolean
+        specialNetPrice:
+          type: number
+        uom:
+          type: integer
+          format: int64
+        doorPrep1Id:
+          type: integer
+          format: int64
+        doorPrep2Id:
+          type: integer
+          format: int64
+        framePrep1Id:
+          type: integer
+          format: int64
+        framePrep2Id:
+          type: integer
+          format: int64
+        inactivePrepId:
+          type: integer
+          format: int64
+        displayPosition:
+          type: number
+        cylinders:
+          type: integer
+          format: int32
+        replaceOtherPreps:
+          type: boolean
+        prepPriority:
+          type: integer
+          format: int32
+        electric:
+          type: boolean
+    ProductLine:
+      type: object
+      properties:
+        productLine:
+          type: string
+        hardwareType:
+          $ref: "#/components/schemas/HdwTypeEnum"
+    TypeEnum:
+      type: string
+      enum:
+      - Frame
+      - Door
+      - Inactive
+    UOM:
+      type: string
+      enum:
+      - EA
+      - SET
+      - CYL
+      - PER_100_SQ_INCH
+      - PER_FOOT
+      - PER_SQ_INCH
+      - PER_INCH
+    manufacturerId:
+      oneOf:
+      - type: string
+      - type: integer
+        format: int64
+  parameters:
+    endRow:
+      description: Ending row for the query. Query limit is 100 records (endRow -
+        startRow <= 100)
+      in: query
+      name: endRow
+      schema:
+        type: integer
+        format: int64
+        default: 20
+        minimum: 1
+    hardwareType:
+      in: query
+      name: hardwareType
+      schema:
+        $ref: "#/components/schemas/HdwTypeEnum"
+    productLine:
+      description: hardware line
+      in: query
+      name: productLine
+      schema:
+        type: string
+    query:
+      description: "Query based on [RSQL/FIQL](https://github.com/jirutka/rsql-parser)"
+      in: query
+      name: query
+      schema:
+        type: string
+    sort:
+      description: List of fields for sort. - for descending + for ascending
+      in: query
+      name: sort
+      schema:
+        type: string
+    startRow:
+      description: Starting row for the query
+      in: query
+      name: startRow
+      schema:
+        type: integer
+        format: int64
+        default: 0
+        minimum: 0
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Forbidden:
+      description: Forbidden
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    NotFound:
+      description: Not Found
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+info:
+  contact:
+    email: austin.derosso@assaabloy.com
+  description: ASSA ABLOY PBS REST API
+  termsOfService: https://aa-bts.com/terms/
+  title: PBS Public API
+  version: v1
+tags:
+- name: manufacturers
+  description: manufacturer information
+- name: hardware
+  description: hardware information
+- name: pbs
+  description: PBS information
+servers:
+- url: https://public.api.aa-bts.com
+  description: Production Endpoint
+- url: https://pbs-api-public-dev.aa-bts.com
+  description: DEV Endpoint
+- url: http://localhost:8080
+  description: Local Development
+security:
+- bearerAuth: []
+paths:
+  /hardwareattributes:
+    get:
+      summary: Get all items
+      description: Return a list of hardware attributes
+      operationId: getHardwareAttributes
+      tags:
+      - hardware
+      parameters:
+      - description: "The manufacturer ID, abbreviation or name"
+        name: manufacturerId
+        required: true
+        schema:
+          $ref: "#/components/schemas/manufacturerId"
+        in: query
+      - $ref: "#/components/parameters/endRow"
+      - $ref: "#/components/parameters/hardwareType"
+      - $ref: "#/components/parameters/productLine"
+      - $ref: "#/components/parameters/query"
+      - $ref: "#/components/parameters/sort"
+      - $ref: "#/components/parameters/startRow"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                startRow: 0
+                endRow: 1
+                totalRows: 1
+                data:
+                - xref: 766078
+                  manufacturer: SA
+                  type: Function
+                  printCode: "7805"
+                  printDescription: Office or Entry
+                  uom: EA
+                  price:
+                    priceBook: May2020
+                    effectiveDate: 2017-07-21
+                    effective: true
+                    listPrice: 994
+                    price: 994
+                    currency: USD
+                  preps:
+                  - id: 0
+                    type: Frame
+                    code: string
+                    description: string
+                  numCylinders: 0
+                  ansi: string
+                  grade: string
+                  electrical: true
+                  co2e: 0
+                  embodiedCarbon: 0
+                  energyInUse: 0
+                  recyclability: 0
+                  environmentalManagementSystem: string
+                  referenceServiceLife: string
+                  fire: 0
+                  smoke: 0
+                  stc: 0
+              schema:
+                $ref: "#/components/schemas/HardwareAttributes"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /hardwareitems:
+    get:
+      summary: Get all items
+      description: Return a list of hardwareitems
+      operationId: getHardwareItems
+      tags:
+      - hardware
+      parameters:
+      - description: attribute xrefs to filter hardware items on
+        name: attributeXrefs
+        in: query
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+      - description: "The manufacturer ID, abbreviation or name"
+        name: manufacturerId
+        required: true
+        schema:
+          $ref: "#/components/schemas/manufacturerId"
+        in: query
+      - name: xref
+        in: query
+        schema:
+          type: integer
+          format: int64
+      - $ref: "#/components/parameters/endRow"
+      - $ref: "#/components/parameters/hardwareType"
+      - $ref: "#/components/parameters/productLine"
+      - $ref: "#/components/parameters/query"
+      - $ref: "#/components/parameters/sort"
+      - $ref: "#/components/parameters/startRow"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                startRow: 0
+                endRow: 1
+                totalRows: 1
+                data:
+                - xref: 766078
+                  manufacturer: SA
+                  productLine: 7800 Mortise Locks
+                  type: LO
+                  typeDescription: Locksets
+                  subTypeDescription: Mortise Lock
+                  partNumber: 7805 LB US15
+                  orderDescription: 7805 LB US15
+                  numCylinders: 0
+                  deadLock: true
+                  assets:
+                  - id: string
+                    type: string
+                    title: string
+                    mimeType: string
+                    url: string
+                  weight: 0
+                  price:
+                  - priceBook: May2020
+                    effectiveDate: 2017-07-21
+                    effective: true
+                    listPrice: 994
+                    price: 994
+                    currency: USD
+                  attributes:
+                  - xref: 766078
+                    manufacturer: SA
+                    type: Function
+                    printCode: "7805"
+                    printDescription: Office or Entry
+                    uom: EA
+                    price:
+                      priceBook: May2020
+                      effectiveDate: 2017-07-21
+                      effective: true
+                      listPrice: 994
+                      price: 994
+                      currency: USD
+                    preps:
+                    - id: 0
+                      type: Frame
+                      code: string
+                      description: string
+                    numCylinders: 0
+                    ansi: string
+                    grade: string
+                    electrical: true
+                    co2e: 0
+                    embodiedCarbon: 0
+                    energyInUse: 0
+                    recyclability: 0
+                    environmentalManagementSystem: string
+                    referenceServiceLife: string
+                    fire: 0
+                    smoke: 0
+                    stc: 0
+                  preps:
+                  - id: 0
+                    type: Frame
+                    code: string
+                    description: string
+              schema:
+                $ref: "#/components/schemas/HardwareItems"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /hardwareitems/locate:
+    get:
+      summary: Locates a hardware item by a configured part number
+      description: "Searches for a part number to find either an exact match or the\
+        \ closest result. If an exact match isn't found, results will be sorted with\
+        \ the closest match first."
+      operationId: locateHardware
+      tags:
+      - hardware
+      parameters:
+      - description: Excludes all options that have a zero price
+        name: excludeNoPriceOptions
+        in: query
+        schema:
+          type: boolean
+          default: false
+      - description: Excludes all options from hardware item search
+        name: excludeOptions
+        in: query
+        schema:
+          type: boolean
+          default: false
+      - description: include the HardwareItems in the response
+        name: includeHardwareItem
+        in: query
+        schema:
+          type: boolean
+          default: false
+      - description: "The manufacturer ID, abbreviation or name"
+        name: manufacturerId
+        required: true
+        schema:
+          $ref: "#/components/schemas/manufacturerId"
+        in: query
+      - description: part number to search
+        name: partNumber
+        in: query
+        schema:
+          type: string
+          pattern: \S
+        required: true
+      - name: productLine
+        in: query
+        schema:
+          type: string
+      - description: Max number of results to return
+        name: resultQty
+        in: query
+        schema:
+          type: integer
+          format: int32
+          default: 10
+          maximum: 100
+          minimum: 1
+        required: true
+      - description: Character to split search strings on. Default to space " ".
+        name: separatorCharacter
+        in: query
+        schema:
+          type: string
+          minLength: 1
+          default: ' '
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+              - partNumber: 7805 LB US15
+                orderDescription: 7805 LB US15
+                price:
+                  priceBook: May2020
+                  effectiveDate: 2017-07-21
+                  effective: true
+                  listPrice: 994
+                  price: 994
+                  currency: USD
+                exactMatch: true
+                matchScore: 1
+                xref: 766078
+                optionXrefs: []
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HardwareMatch"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /hardwareitems/{xref}:
+    get:
+      summary: Finds by xref ID
+      description: Returns a single hardware item
+      operationId: getHardwareItemById
+      tags:
+      - hardware
+      parameters:
+      - name: xref
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example: |
+                {"xref":766078,"manufacturer":"SA","productLine":"7800 Mortise Locks","type":"LO","typeDescription":"Locksets","subTypeDescription":"Mortise Lock",
+                "partNumber":"7805 LB US15","orderDescription":"7805 LB US15","numCylinders":0,"deadLock":true,"assets":[{"id":"string","type":"string",
+                "title":"string","mimeType":"string","url":"string"}],"weight":0,"price":[{"priceBook":"May2020","effectiveDate":"2017-07-21","effective":true,
+                "listPrice":994,"price":994,"currency":"USD"}],"attributes":[{"xref":766078,"manufacturer":"SA","type":"Function","printCode":"7805",
+                "printDescription":"Office or Entry","uom":"EA","price":{"priceBook":"May2020","effectiveDate":"2017-07-21","effective":true,"listPrice":994,
+                "price":994,"currency":"USD"},"preps":[{"id":0,"type":"Frame","code":"string","description":"string"}],"numCylinders":0,"ansi":"string",.
+                "grade":"string","electrical":true,"co2e":0,"embodiedCarbon":0,"energyInUse":0,"recyclability":0,"environmentalManagementSystem":"string",
+                "referenceServiceLife":"string","fire":0,"smoke":0,"stc":0}],"preps":[{"id":0,"type":"Frame","code":"string","description":"string"}]}
+              schema:
+                $ref: "#/components/schemas/HardwareItem"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /hardwareitems/{xref}/options:
+    get:
+      summary: Get hardware options by hardware item
+      description: Returns a list of hardware options for the hardware item
+      operationId: getHardwareItemsOptions
+      tags:
+      - hardware
+      parameters:
+      - name: xref
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - $ref: "#/components/parameters/endRow"
+      - $ref: "#/components/parameters/query"
+      - $ref: "#/components/parameters/sort"
+      - $ref: "#/components/parameters/startRow"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                startRow: 0
+                endRow: 1
+                totalRows: 1
+                data:
+                - xref: 766078
+                  manufacturer: SA
+                  type: Function
+                  printCode: "7805"
+                  printDescription: Office or Entry
+                  uom: EA
+                  price:
+                  - priceBook: May2020
+                    effectiveDate: 2017-07-21
+                    effective: true
+                    listPrice: 994
+                    price: 994
+                    currency: USD
+                  preps:
+                  - id: 0
+                    type: Frame
+                    code: string
+                    description: string
+                  numCylinders: 0
+                  ansi: string
+                  grade: string
+                  electrical: true
+                  co2e: 0
+                  embodiedCarbon: 0
+                  energyInUse: 0
+                  recyclability: 0
+                  environmentalManagementSystem: string
+                  referenceServiceLife: string
+                  fire: 0
+                  smoke: 0
+                  stc: 0
+                  productLines:
+                  - string
+              schema:
+                $ref: "#/components/schemas/HardwareOptions"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /hardwareitems/{xref}/options/{optionxref}:
+    get:
+      summary: Find by xref ID and option xref ID
+      description: Returns a single hardware option
+      operationId: getHardwareItemsOptionById
+      tags:
+      - hardware
+      parameters:
+      - name: optionxref
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: xref
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                xref: 766078
+                manufacturer: SA
+                type: Function
+                printCode: "7805"
+                printDescription: Office or Entry
+                uom: EA
+                price:
+                - priceBook: May2020
+                  effectiveDate: 2017-07-21
+                  effective: true
+                  listPrice: 994
+                  price: 994
+                  currency: USD
+                preps:
+                - id: 0
+                  type: Frame
+                  code: string
+                  description: string
+                numCylinders: 0
+                ansi: string
+                grade: string
+                electrical: true
+                co2e: 0
+                embodiedCarbon: 0
+                energyInUse: 0
+                recyclability: 0
+                environmentalManagementSystem: string
+                referenceServiceLife: string
+                fire: 0
+                smoke: 0
+                stc: 0
+                productLines:
+                - string
+              schema:
+                $ref: "#/components/schemas/HardwareOption"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /hardwareitems/{xref}/pricewithoptions:
+    get:
+      summary: Price and description of an item with options
+      description: "Gets the price and updated description of a hardware item with\
+        \ a set of options.<br>Length, width, and height are only required if the\
+        \ hardware item has a specific size. All 3 values do not need to be provided,\
+        \ either length or width and height should be specified. Setting all 3 will\
+        \ throw an error."
+      operationId: getHardwareItemPriceWithOptions
+      tags:
+      - hardware
+      parameters:
+      - description: hardware item xref
+        name: xref
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - description: "hardware handing, will only be appended to the description if\
+          \ the item is meant to be handed. Allowed values are LH, RH, LHR, and RHR"
+        name: hand
+        in: query
+        schema:
+          type: string
+          pattern: ^(LH|RH|LHR|RHR)$
+      - description: hardware item height
+        name: height
+        in: query
+        schema:
+          type: string
+      - description: hardware item length
+        name: length
+        in: query
+        schema:
+          type: string
+      - description: list of hardware option xrefs
+        name: optionxref
+        in: query
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+      - description: "Price Book to use for pricing. If this value is provided, future\
+          \ pricing will not be returned in the response, only the price book requested."
+        name: priceBook
+        in: query
+        schema:
+          type: string
+      - description: hardware item width
+        name: width
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                partNumber: 7805 LB US15
+                orderDescription: 7805 LB US15
+                price:
+                - priceBook: May2020
+                  effectiveDate: 2017-07-21
+                  effective: true
+                  listPrice: 994
+                  price: 994
+                  currency: USD
+              schema:
+                $ref: "#/components/schemas/DescriptionAndPrices"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /hardwareoptions:
+    get:
+      summary: Get all items
+      description: Returns a list of hardware options
+      operationId: getHardwareOptions
+      tags:
+      - hardware
+      parameters:
+      - description: "The manufacturer ID, abbreviation or name"
+        name: manufacturerId
+        required: true
+        schema:
+          $ref: "#/components/schemas/manufacturerId"
+        in: query
+      - $ref: "#/components/parameters/endRow"
+      - $ref: "#/components/parameters/productLine"
+      - $ref: "#/components/parameters/query"
+      - $ref: "#/components/parameters/sort"
+      - $ref: "#/components/parameters/startRow"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                startRow: 0
+                endRow: 1
+                totalRows: 1
+                data:
+                - xref: 766078
+                  manufacturer: SA
+                  type: Function
+                  printCode: "7805"
+                  printDescription: Office or Entry
+                  uom: EA
+                  price:
+                  - priceBook: May2020
+                    effectiveDate: 2017-07-21
+                    effective: true
+                    listPrice: 994
+                    price: 994
+                    currency: USD
+                  preps:
+                  - id: 0
+                    type: Frame
+                    code: string
+                    description: string
+                  numCylinders: 0
+                  ansi: string
+                  grade: string
+                  electrical: true
+                  co2e: 0
+                  embodiedCarbon: 0
+                  energyInUse: 0
+                  recyclability: 0
+                  environmentalManagementSystem: string
+                  referenceServiceLife: string
+                  fire: 0
+                  smoke: 0
+                  stc: 0
+                  productLines:
+                  - string
+              schema:
+                $ref: "#/components/schemas/HardwareOptions"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /hardwareoptions/{optionxref}:
+    get:
+      summary: Find by option xref ID
+      description: Returns a single hardware option
+      operationId: getHardwareOptionById
+      tags:
+      - hardware
+      parameters:
+      - name: optionxref
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                xref: 766078
+                manufacturer: SA
+                type: Function
+                printCode: "7805"
+                printDescription: Office or Entry
+                uom: EA
+                price:
+                - priceBook: May2020
+                  effectiveDate: 2017-07-21
+                  effective: true
+                  listPrice: 994
+                  price: 994
+                  currency: USD
+                preps:
+                - id: 0
+                  type: Frame
+                  code: string
+                  description: string
+                numCylinders: 0
+                ansi: string
+                grade: string
+                electrical: true
+                co2e: 0
+                embodiedCarbon: 0
+                energyInUse: 0
+                recyclability: 0
+                environmentalManagementSystem: string
+                referenceServiceLife: string
+                fire: 0
+                smoke: 0
+                stc: 0
+                productLines:
+                - string
+              schema:
+                $ref: "#/components/schemas/HardwareOption"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /manufacturers:
+    get:
+      summary: Get all items
+      description: Returns a list of manufacturers
+      operationId: getManufacturers
+      tags:
+      - manufacturers
+      parameters:
+      - description: Filter manufacturers that have price books
+        name: hasProduct
+        in: query
+        schema:
+          type: boolean
+      - description: "The manufacturer ID, abbreviation or name"
+        name: manufacturerId
+        schema:
+          $ref: "#/components/schemas/manufacturerId"
+        in: query
+      - description: "Manufacturer type, `HM` (Hardware Manufacturer) or `DFM` (Door\
+          \ / Frame Manufacturer)"
+        name: type
+        in: query
+        schema:
+          $ref: "#/components/schemas/ManufacturerType"
+      - $ref: "#/components/parameters/endRow"
+      - $ref: "#/components/parameters/query"
+      - $ref: "#/components/parameters/sort"
+      - $ref: "#/components/parameters/startRow"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                startRow: 0
+                endRow: 1
+                totalRows: 1
+                data:
+                - manufacturerId: 1
+                  type: Hardware Manufacturer
+                  name: SARGENT
+                  address1: 100 Sargent Drive
+                  address2: P.O. Box 9725
+                  address3: string
+                  city: New Haven
+                  state: CT
+                  zip: 06536-0915
+                  country: US
+                  phone: (800) 727-5477
+                  fax: (888) 863-5054
+                  email: webmaster@sargentlock.com
+                  webUrl: http://www.sargentlock.com/
+                  businessUnit: "004"
+                  abbr: SA
+              schema:
+                $ref: "#/components/schemas/Manufacturers"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /manufacturers/{manufacturerId}:
+    get:
+      summary: Finds by manufacturer ID
+      description: Returns a single manufacturer
+      operationId: getManufacturerById
+      tags:
+      - manufacturers
+      parameters:
+      - description: ID of the manufacturer to return
+        name: manufacturerId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              example:
+                manufacturerId: 1
+                type: Hardware Manufacturer
+                name: SARGENT
+                address1: 100 Sargent Drive
+                address2: P.O. Box 9725
+                address3: string
+                city: New Haven
+                state: CT
+                zip: 06536-0915
+                country: US
+                phone: (800) 727-5477
+                fax: (888) 863-5054
+                email: webmaster@sargentlock.com
+                webUrl: http://www.sargentlock.com/
+                businessUnit: "004"
+                abbr: SA
+              schema:
+                $ref: "#/components/schemas/Manufacturer"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /priceBookComparisonTool:
+    get:
+      summary: Get price book comparison
+      description: Returns a list of hdw standards that have been removed and added
+        with their prices and xrefs
+      operationId: getPriceBookComparisons
+      tags:
+      - pbs
+      parameters:
+      - description: '"true" to compare a future price book or "false" to compare
+          to the previous price book'
+        name: futurePriceBook
+        in: query
+        schema:
+          type: boolean
+          default: false
+      - description: "The manufacturer ID, abbreviation or name"
+        name: manufacturerId
+        required: true
+        schema:
+          $ref: "#/components/schemas/manufacturerId"
+        in: query
+      responses:
+        "200":
+          description: OK
+          content: {}
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /pricebooks:
+    get:
+      summary: Get new price books after date
+      description: Retrieves all price books available after given date.
+      operationId: getPriceBooks
+      tags:
+      - pbs
+      parameters:
+      - description: "The manufacturer ID, abbreviation or name"
+        name: manufacturerId
+        schema:
+          $ref: "#/components/schemas/manufacturerId"
+        in: query
+      - name: priceBooksAfterDate
+        in: query
+        schema:
+          $ref: "#/components/schemas/LocalDate"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PriceBook"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /pricebooks/list:
+    get:
+      summary: List price books
+      description: Retrieves all price books available for manufacturer.
+      operationId: listPriceBooks
+      tags:
+      - pbs
+      parameters:
+      - description: "The manufacturer ID, abbreviation or name"
+        name: manufacturerId
+        required: true
+        schema:
+          $ref: "#/components/schemas/manufacturerId"
+        in: query
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PriceBook"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /productlines:
+    get:
+      summary: Get all items
+      description: Returns a list of product lines for a manufacturer
+      operationId: getProductLines
+      tags:
+      - hardware
+      parameters:
+      - description: "The manufacturer ID, abbreviation or name"
+        name: manufacturerId
+        required: true
+        schema:
+          $ref: "#/components/schemas/manufacturerId"
+        in: query
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProductLine"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  /subtypes:
+    get:
+      summary: Get all items
+      description: Lists subtypes by manufacturer
+      operationId: getSubTypes
+      tags:
+      - hardware
+      parameters:
+      - description: "The manufacturer ID, abbreviation or name"
+        name: manufacturerId
+        required: true
+        schema:
+          $ref: "#/components/schemas/manufacturerId"
+        in: query
+      - $ref: "#/components/parameters/productLine"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"

@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>AssaAbloy.Bts.PbsApiClient</PackageId>
+    <Version>0.0.1</Version>
+    <Authors>ASSA ABLOY BTS</Authors>
+    <Description>PBS Public API Client - .NET</Description>
+    <RepositoryUrl>https://github.com/assaabloy-bts/pbs-api-public-client</RepositoryUrl>
+    <Copyright>ASSA ABLOY</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NSwag.MSBuild" Version="14.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+  </ItemGroup>
+
+  <Target Name="NSwag" BeforeTargets="CoreCompile" Inputs="../../openapi.yaml" Outputs="$(IntermediateOutputPath)/PbsApiClient.cs">
+    <Exec Command="$(NSwagExe) openapi2csclient /input:../../openapi.yaml /namespace:AssaAbloy.Bts.PbsApiClient /className:PbsApiClient /output:$(IntermediateOutputPath)/PbsApiClient.cs /generateClientInterfaces:true /jsonLibrary:SystemTextJson /useBaseUrl:false /generateBaseUrlProperty:true /operationGenerationMode:SingleClientFromOperationId" />
+    <ItemGroup>
+      <Compile Include="$(IntermediateOutputPath)/PbsApiClient.cs" />
+    </ItemGroup>
+  </Target>
+
+</Project>

@@ -1,35 +1,44 @@
 package com.assaabloy.bts.pbs.api.client;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assumptions.*;
-
 import java.time.LocalDate;
 import java.util.List;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
-import com.assaabloy.bts.pbs.api.client.model.*;
+import com.assaabloy.bts.pbs.api.client.model.Attribute;
+import com.assaabloy.bts.pbs.api.client.model.DescriptionAndPrices;
+import com.assaabloy.bts.pbs.api.client.model.HardwareAttributes;
+import com.assaabloy.bts.pbs.api.client.model.HardwareItem;
+import com.assaabloy.bts.pbs.api.client.model.HardwareItems;
+import com.assaabloy.bts.pbs.api.client.model.HardwareMatch;
+import com.assaabloy.bts.pbs.api.client.model.HardwareOption;
+import com.assaabloy.bts.pbs.api.client.model.HardwareOptions;
+import com.assaabloy.bts.pbs.api.client.model.Manufacturer;
+import com.assaabloy.bts.pbs.api.client.model.Manufacturers;
+import com.assaabloy.bts.pbs.api.client.model.PriceBook;
+import com.assaabloy.bts.pbs.api.client.model.ProductLine;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class PbsClientTest {
 
     private static PbsClient client;
-    private static String manufacturerAbbr;
-    private static Long manufacturerNumericId;
-    private static Long hardwareItemXref;
-    private static Long hardwareOptionXref;
+    private static String    manufacturerAbbr;
+    private static Long      manufacturerNumericId;
+    private static Long      hardwareItemXref;
+    private static Long      hardwareOptionXref;
 
     @BeforeAll
     static void setUp() {
-        String apiKey = System.getenv("PBS_API_KEY");
-        assumeTrue(apiKey != null && !apiKey.isBlank(),
-                "PBS_API_KEY environment variable is required to run integration tests");
+        final String apiKey = System.getenv("PBS_API_KEY");
+        Assumptions.assumeTrue(apiKey != null && !apiKey.isBlank(), "PBS_API_KEY environment variable is required to run integration tests");
 
-        String baseUrl = System.getenv("PBS_API_URL");
+        final String baseUrl = System.getenv("PBS_API_URL");
         if (baseUrl != null && !baseUrl.isBlank()) {
             client = new PbsClient(baseUrl, apiKey);
         } else {
@@ -42,19 +51,18 @@ class PbsClientTest {
     @Test
     @Order(1)
     void getManufacturers() throws ApiException {
-        Manufacturers result = client.getManufacturers(
-                "SA", true, null, 20L, null, null, 0L);
+        final Manufacturers result = client.getManufacturers("SA", true, null, 20L, null, null, 0L);
 
-        assertNotNull(result);
-        assertNotNull(result.getData());
-        assertFalse(result.getData().isEmpty(), "Expected at least one manufacturer");
-        assertEquals(0, result.getStartRow());
-        assertTrue(result.getTotalRows() > 0);
+        Assertions.assertNotNull(result);
+        Assertions.assertNotNull(result.getData());
+        Assertions.assertFalse(result.getData().isEmpty(), "Expected at least one manufacturer");
+        Assertions.assertEquals(0, result.getStartRow());
+        Assertions.assertTrue(result.getTotalRows() > 0);
 
-        Manufacturer mfg = result.getData().get(0);
-        assertNotNull(mfg.getName());
-        assertNotNull(mfg.getAbbr());
-        assertNotNull(mfg.getManufacturerId());
+        final Manufacturer mfg = result.getData().getFirst();
+        Assertions.assertNotNull(mfg.getName());
+        Assertions.assertNotNull(mfg.getAbbr());
+        Assertions.assertNotNull(mfg.getManufacturerId());
 
         manufacturerAbbr = mfg.getAbbr();
         manufacturerNumericId = mfg.getManufacturerId();
@@ -63,15 +71,15 @@ class PbsClientTest {
     @Test
     @Order(2)
     void getManufacturerById() throws ApiException {
-        assertNotNull(manufacturerNumericId, "Requires getManufacturers to run first");
+        Assertions.assertNotNull(manufacturerNumericId, "Requires getManufacturers to run first");
 
-        Manufacturer result = client.getManufacturerById(manufacturerNumericId);
+        final Manufacturer result = client.getManufacturerById(manufacturerNumericId);
 
-        assertNotNull(result);
-        assertEquals(manufacturerNumericId, result.getManufacturerId());
-        assertNotNull(result.getName());
-        assertNotNull(result.getAbbr());
-        assertNotNull(result.getType());
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(manufacturerNumericId, result.getManufacturerId());
+        Assertions.assertNotNull(result.getName());
+        Assertions.assertNotNull(result.getAbbr());
+        Assertions.assertNotNull(result.getType());
     }
 
     // -- Product Lines & Subtypes --
@@ -79,28 +87,28 @@ class PbsClientTest {
     @Test
     @Order(3)
     void getProductLines() throws ApiException {
-        assertNotNull(manufacturerAbbr);
+        Assertions.assertNotNull(manufacturerAbbr);
 
-        List<ProductLine> result = client.getProductLines(manufacturerAbbr);
+        final List<ProductLine> result = client.getProductLines(manufacturerAbbr);
 
-        assertNotNull(result);
-        assertFalse(result.isEmpty(), "Expected at least one product line");
+        Assertions.assertNotNull(result);
+        Assertions.assertFalse(result.isEmpty(), "Expected at least one product line");
 
-        ProductLine pl = result.get(0);
-        assertNotNull(pl.getProductLine());
-        assertNotNull(pl.getHardwareType());
+        final ProductLine pl = result.getFirst();
+        Assertions.assertNotNull(pl.getProductLine());
+        Assertions.assertNotNull(pl.getHardwareType());
     }
 
     @Test
     @Order(4)
     void getSubTypes() throws ApiException {
-        assertNotNull(manufacturerAbbr);
+        Assertions.assertNotNull(manufacturerAbbr);
 
-        List<String> result = client.getSubTypes(manufacturerAbbr, null);
+        final List<String> result = client.getSubTypes(manufacturerAbbr, null);
 
-        assertNotNull(result);
-        assertFalse(result.isEmpty(), "Expected at least one subtype");
-        assertNotNull(result.get(0));
+        Assertions.assertNotNull(result);
+        Assertions.assertFalse(result.isEmpty(), "Expected at least one subtype");
+        Assertions.assertNotNull(result.getFirst());
     }
 
     // -- Hardware Items --
@@ -108,21 +116,20 @@ class PbsClientTest {
     @Test
     @Order(5)
     void getHardwareItems() throws ApiException {
-        assertNotNull(manufacturerAbbr);
+        Assertions.assertNotNull(manufacturerAbbr);
 
-        HardwareItems result = client.getHardwareItems(
-                manufacturerAbbr, null, null, 5L, null, null, null, null, 0L);
+        final HardwareItems result = client.getHardwareItems(manufacturerAbbr, null, null, 5L, null, null, null, null, 0L);
 
-        assertNotNull(result);
-        assertNotNull(result.getData());
-        assertFalse(result.getData().isEmpty(), "Expected at least one hardware item");
-        assertEquals(0, result.getStartRow());
-        assertTrue(result.getTotalRows() > 0);
+        Assertions.assertNotNull(result);
+        Assertions.assertNotNull(result.getData());
+        Assertions.assertFalse(result.getData().isEmpty(), "Expected at least one hardware item");
+        Assertions.assertEquals(0, result.getStartRow());
+        Assertions.assertTrue(result.getTotalRows() > 0);
 
-        HardwareItem item = result.getData().get(0);
-        assertNotNull(item.getXref());
-        assertNotNull(item.getManufacturer());
-        assertNotNull(item.getPartNumber());
+        final HardwareItem item = result.getData().getFirst();
+        Assertions.assertNotNull(item.getXref());
+        Assertions.assertNotNull(item.getManufacturer());
+        Assertions.assertNotNull(item.getPartNumber());
 
         hardwareItemXref = item.getXref();
     }
@@ -130,57 +137,55 @@ class PbsClientTest {
     @Test
     @Order(6)
     void getHardwareItemById() throws ApiException {
-        assertNotNull(hardwareItemXref, "Requires getHardwareItems to run first");
+        Assertions.assertNotNull(hardwareItemXref, "Requires getHardwareItems to run first");
 
-        HardwareItem result = client.getHardwareItemById(hardwareItemXref);
+        final HardwareItem result = client.getHardwareItemById(hardwareItemXref);
 
-        assertNotNull(result);
-        assertEquals(hardwareItemXref, result.getXref());
-        assertNotNull(result.getManufacturer());
-        assertNotNull(result.getPartNumber());
-        assertNotNull(result.getType());
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(hardwareItemXref, result.getXref());
+        Assertions.assertNotNull(result.getManufacturer());
+        Assertions.assertNotNull(result.getPartNumber());
+        Assertions.assertNotNull(result.getType());
     }
 
     @Test
     @Order(7)
     void getHardwareAttributes() throws ApiException {
-        assertNotNull(manufacturerAbbr);
+        Assertions.assertNotNull(manufacturerAbbr);
 
-        HardwareAttributes result = client.getHardwareAttributes(
-                manufacturerAbbr, 5L, null, null, null, null, 0L);
+        final HardwareAttributes result = client.getHardwareAttributes(manufacturerAbbr, 5L, null, null, null, null, 0L);
 
-        assertNotNull(result);
-        assertNotNull(result.getData());
-        assertFalse(result.getData().isEmpty(), "Expected at least one hardware attribute");
-        assertEquals(0, result.getStartRow());
-        assertTrue(result.getTotalRows() > 0);
+        Assertions.assertNotNull(result);
+        Assertions.assertNotNull(result.getData());
+        Assertions.assertFalse(result.getData().isEmpty(), "Expected at least one hardware attribute");
+        Assertions.assertEquals(0, result.getStartRow());
+        Assertions.assertTrue(result.getTotalRows() > 0);
 
-        Attribute attr = result.getData().get(0);
-        assertNotNull(attr.getXref());
-        assertNotNull(attr.getManufacturer());
-        assertNotNull(attr.getType());
-        assertNotNull(attr.getPrintCode());
-        assertNotNull(attr.getPrintDescription());
+        final Attribute attr = result.getData().getFirst();
+        Assertions.assertNotNull(attr.getXref());
+        Assertions.assertNotNull(attr.getManufacturer());
+        Assertions.assertNotNull(attr.getType());
+        Assertions.assertNotNull(attr.getPrintCode());
+        Assertions.assertNotNull(attr.getPrintDescription());
     }
 
     @Test
     @Order(8)
     void locateHardware() throws ApiException {
-        assertNotNull(hardwareItemXref, "Requires getHardwareItems to run first");
+        Assertions.assertNotNull(hardwareItemXref, "Requires getHardwareItems to run first");
 
         // Fetch the item to get its part number
-        HardwareItem item = client.getHardwareItemById(hardwareItemXref);
+        final HardwareItem item = client.getHardwareItemById(hardwareItemXref);
 
-        List<HardwareMatch> result = client.locateHardware(
-                manufacturerAbbr, item.getPartNumber(), 5, null, null, null, null, null);
+        final List<HardwareMatch> result = client.locateHardware(manufacturerAbbr, item.getPartNumber(), 5, false, false, false, null, null);
 
-        assertNotNull(result);
-        assertFalse(result.isEmpty(), "Expected at least one match");
+        Assertions.assertNotNull(result);
+        Assertions.assertFalse(result.isEmpty(), "Expected at least one match");
 
-        HardwareMatch match = result.get(0);
-        assertNotNull(match.getPartNumber());
-        assertNotNull(match.getOrderDescription());
-        assertNotNull(match.getMatchScore());
+        final HardwareMatch match = result.getFirst();
+        Assertions.assertNotNull(match.getPartNumber());
+        Assertions.assertNotNull(match.getOrderDescription());
+        Assertions.assertNotNull(match.getMatchScore());
     }
 
     // -- Hardware Item Options --
@@ -188,21 +193,20 @@ class PbsClientTest {
     @Test
     @Order(9)
     void getHardwareItemsOptions() throws ApiException {
-        assertNotNull(hardwareItemXref, "Requires getHardwareItems to run first");
+        Assertions.assertNotNull(hardwareItemXref, "Requires getHardwareItems to run first");
 
-        HardwareOptions result = client.getHardwareItemsOptions(
-                hardwareItemXref, 5L, null, null, 0L);
+        final HardwareOptions result = client.getHardwareItemsOptions(hardwareItemXref, 5L, null, null, 0L);
 
-        assertNotNull(result);
-        assertNotNull(result.getData());
-        assertEquals(0, result.getStartRow());
+        Assertions.assertNotNull(result);
+        Assertions.assertNotNull(result.getData());
+        Assertions.assertEquals(0, result.getStartRow());
 
         if (!result.getData().isEmpty()) {
-            HardwareOption opt = result.getData().get(0);
-            assertNotNull(opt.getXref());
-            assertNotNull(opt.getManufacturer());
-            assertNotNull(opt.getPrintCode());
-            assertNotNull(opt.getPrintDescription());
+            final HardwareOption opt = result.getData().getFirst();
+            Assertions.assertNotNull(opt.getXref());
+            Assertions.assertNotNull(opt.getManufacturer());
+            Assertions.assertNotNull(opt.getPrintCode());
+            Assertions.assertNotNull(opt.getPrintDescription());
             hardwareOptionXref = opt.getXref();
         }
     }
@@ -210,29 +214,26 @@ class PbsClientTest {
     @Test
     @Order(10)
     void getHardwareItemsOptionById() throws ApiException {
-        assumeTrue(hardwareOptionXref != null,
-                "No options available for the test hardware item");
+        Assumptions.assumeTrue(hardwareOptionXref != null, "No options available for the test hardware item");
 
-        HardwareOption result = client.getHardwareItemsOptionById(
-                hardwareOptionXref, hardwareItemXref);
+        final HardwareOption result = client.getHardwareItemsOptionById(hardwareOptionXref, hardwareItemXref);
 
-        assertNotNull(result);
-        assertEquals(hardwareOptionXref, result.getXref());
-        assertNotNull(result.getManufacturer());
-        assertNotNull(result.getPrintCode());
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(hardwareOptionXref, result.getXref());
+        Assertions.assertNotNull(result.getManufacturer());
+        Assertions.assertNotNull(result.getPrintCode());
     }
 
     @Test
     @Order(11)
     void getHardwareItemPriceWithOptions() throws ApiException {
-        assertNotNull(hardwareItemXref, "Requires getHardwareItems to run first");
+        Assertions.assertNotNull(hardwareItemXref, "Requires getHardwareItems to run first");
 
-        DescriptionAndPrices result = client.getHardwareItemPriceWithOptions(
-                hardwareItemXref, null, null, null, null, null, null);
+        final DescriptionAndPrices result = client.getHardwareItemPriceWithOptions(hardwareItemXref, null, null, null, null, null, null);
 
-        assertNotNull(result);
-        assertNotNull(result.getPartNumber());
-        assertNotNull(result.getOrderDescription());
+        Assertions.assertNotNull(result);
+        Assertions.assertNotNull(result.getPartNumber());
+        Assertions.assertNotNull(result.getOrderDescription());
     }
 
     // -- Hardware Options (global) --
@@ -240,41 +241,39 @@ class PbsClientTest {
     @Test
     @Order(12)
     void getHardwareOptions() throws ApiException {
-        assertNotNull(manufacturerAbbr);
+        Assertions.assertNotNull(manufacturerAbbr);
 
-        HardwareOptions result = client.getHardwareOptions(
-                manufacturerAbbr, 5L, null, null, null, 0L);
+        final HardwareOptions result = client.getHardwareOptions(manufacturerAbbr, 5L, null, null, null, 0L);
 
-        assertNotNull(result);
-        assertNotNull(result.getData());
-        assertFalse(result.getData().isEmpty(), "Expected at least one hardware option");
-        assertEquals(0, result.getStartRow());
-        assertTrue(result.getTotalRows() > 0);
+        Assertions.assertNotNull(result);
+        Assertions.assertNotNull(result.getData());
+        Assertions.assertFalse(result.getData().isEmpty(), "Expected at least one hardware option");
+        Assertions.assertEquals(0, result.getStartRow());
+        Assertions.assertTrue(result.getTotalRows() > 0);
 
-        HardwareOption opt = result.getData().get(0);
-        assertNotNull(opt.getXref());
-        assertNotNull(opt.getManufacturer());
-        assertNotNull(opt.getPrintCode());
-        assertNotNull(opt.getPrintDescription());
+        final HardwareOption opt = result.getData().getFirst();
+        Assertions.assertNotNull(opt.getXref());
+        Assertions.assertNotNull(opt.getManufacturer());
+        Assertions.assertNotNull(opt.getPrintCode());
+        Assertions.assertNotNull(opt.getPrintDescription());
     }
 
     @Test
     @Order(13)
     void getHardwareOptionById() throws ApiException {
-        assertNotNull(manufacturerAbbr);
+        Assertions.assertNotNull(manufacturerAbbr);
 
         // Get an option xref from the global options list
-        HardwareOptions options = client.getHardwareOptions(
-                manufacturerAbbr, 1L, null, null, null, 0L);
-        assertFalse(options.getData().isEmpty());
-        long optXref = options.getData().get(0).getXref();
+        final HardwareOptions options = client.getHardwareOptions(manufacturerAbbr, 1L, null, null, null, 0L);
+        Assertions.assertFalse(options.getData().isEmpty());
+        final long optXref = options.getData().getFirst().getXref();
 
-        HardwareOption result = client.getHardwareOptionById(optXref);
+        final HardwareOption result = client.getHardwareOptionById(optXref);
 
-        assertNotNull(result);
-        assertEquals(optXref, result.getXref());
-        assertNotNull(result.getManufacturer());
-        assertNotNull(result.getPrintCode());
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(optXref, result.getXref());
+        Assertions.assertNotNull(result.getManufacturer());
+        Assertions.assertNotNull(result.getPrintCode());
     }
 
     // -- Price Books --
@@ -282,11 +281,11 @@ class PbsClientTest {
     @Test
     @Order(14)
     void getPriceBookComparisons() throws ApiException {
-        assertNotNull(manufacturerAbbr);
+        Assertions.assertNotNull(manufacturerAbbr);
 
         try {
             client.getPriceBookComparisons(manufacturerAbbr, false);
-        } catch (ApiException e) {
+        } catch (final ApiException e) {
             // 504 Gateway Timeout is acceptable for this long-running comparison
             if (e.getCode() != 504) {
                 throw e;
@@ -297,33 +296,33 @@ class PbsClientTest {
     @Test
     @Order(15)
     void listPriceBooks() throws ApiException {
-        assertNotNull(manufacturerAbbr);
+        Assertions.assertNotNull(manufacturerAbbr);
 
-        List<PriceBook> result = client.listPriceBooks(manufacturerAbbr);
+        final List<PriceBook> result = client.listPriceBooks(manufacturerAbbr);
 
-        assertNotNull(result);
-        assertFalse(result.isEmpty(), "Expected at least one price book");
+        Assertions.assertNotNull(result);
+        Assertions.assertFalse(result.isEmpty(), "Expected at least one price book");
 
-        PriceBook pb = result.get(0);
-        assertNotNull(pb.getManufacturer());
-        assertNotNull(pb.getDescription());
-        assertNotNull(pb.getEffectiveDate());
+        final PriceBook pb = result.getFirst();
+        Assertions.assertNotNull(pb.getManufacturer());
+        Assertions.assertNotNull(pb.getDescription());
+        Assertions.assertNotNull(pb.getEffectiveDate());
     }
 
     @Test
     @Order(16)
     void getPriceBooks() throws ApiException {
-        assertNotNull(manufacturerAbbr);
+        Assertions.assertNotNull(manufacturerAbbr);
 
-        List<PriceBook> result = client.getPriceBooks(
-                LocalDate.of(2000, 1, 1), manufacturerAbbr);
+        final List<PriceBook> result = client.getPriceBooks(LocalDate.of(2000, 1, 1), manufacturerAbbr);
 
-        assertNotNull(result);
-        assertFalse(result.isEmpty(), "Expected at least one price book after 2000-01-01");
+        Assertions.assertNotNull(result);
+        Assertions.assertFalse(result.isEmpty(), "Expected at least one price book after 2000-01-01");
 
-        PriceBook pb = result.get(0);
-        assertNotNull(pb.getManufacturer());
-        assertNotNull(pb.getDescription());
-        assertNotNull(pb.getEffectiveDate());
+        final PriceBook pb = result.getFirst();
+        Assertions.assertNotNull(pb.getManufacturer());
+        Assertions.assertNotNull(pb.getDescription());
+        Assertions.assertNotNull(pb.getEffectiveDate());
     }
+
 }

@@ -22,8 +22,15 @@
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
 
-  <Target Name="NSwag" BeforeTargets="CoreCompile" Inputs="../../openapi.yaml" Outputs="$(IntermediateOutputPath)/PbsApiClient.cs">
-    <Exec Command="$(NSwagExe) openapi2csclient /input:../../openapi.yaml /namespace:AssaAbloy.Bts.PbsApiClient /className:PbsApiClient /output:$(IntermediateOutputPath)/PbsApiClient.cs /generateClientInterfaces:true /jsonLibrary:SystemTextJson /useBaseUrl:false /generateBaseUrlProperty:true /operationGenerationMode:SingleClientFromOperationId" />
+  <!-- Prepare OpenAPI spec: simplify manufacturerId oneOf to plain string
+       to avoid broken query parameter serialization in generated code.
+       The original openapi.yaml is unchanged. -->
+  <Target Name="PrepareSpec" BeforeTargets="NSwag" Inputs="../../openapi.yaml" Outputs="$(IntermediateOutputPath)/openapi-client.yaml">
+    <Exec Command="awk '/^    manufacturerId:$$/{mfid=1;print;next} mfid&amp;&amp;/^      oneOf:$$/{print &quot;      type: string&quot;;skip=1;next} skip&amp;&amp;/^[^ ]|^  [^ ]|^    [^ ]/{skip=0;mfid=0} skip{next} mfid{mfid=0} {print}' ../../openapi.yaml > $(IntermediateOutputPath)/openapi-client.yaml" />
+  </Target>
+
+  <Target Name="NSwag" BeforeTargets="CoreCompile" Inputs="../../openapi.yaml" Outputs="$(IntermediateOutputPath)/PbsApiClient.cs" DependsOnTargets="PrepareSpec">
+    <Exec Command="$(NSwagExe) openapi2csclient /input:$(IntermediateOutputPath)/openapi-client.yaml /namespace:AssaAbloy.Bts.PbsApiClient /className:PbsApiClient /output:$(IntermediateOutputPath)/PbsApiClient.cs /generateClientInterfaces:true /jsonLibrary:SystemTextJson /useBaseUrl:false /generateBaseUrlProperty:true /operationGenerationMode:SingleClientFromOperationId" />
     <ItemGroup>
       <Compile Include="$(IntermediateOutputPath)/PbsApiClient.cs" />
     </ItemGroup>

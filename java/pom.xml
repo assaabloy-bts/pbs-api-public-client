@@ -79,16 +79,38 @@
             <version>5.11.4</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.wiremock</groupId>
-            <artifactId>wiremock-standalone</artifactId>
-            <version>3.12.1</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!-- Prepare OpenAPI spec for code generation.
+                 The manufacturerId oneOf (string|integer) schema causes the
+                 generator to emit broken query-param serialization. We create
+                 a build-time copy that treats it as a plain string, which the
+                 API already accepts. The original openapi.yaml is unchanged. -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>prepare-openapi-spec</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>awk</executable>
+                            <arguments>
+                                <argument>/^    manufacturerId:$/{mfid=1;print;next} mfid&amp;&amp;/^      oneOf:$/{print "      type: string";skip=1;next} skip&amp;&amp;/^[^ ]|^  [^ ]|^    [^ ]/{skip=0;mfid=0} skip{next} mfid{mfid=0} {print}</argument>
+                                <argument>${project.basedir}/../openapi.yaml</argument>
+                            </arguments>
+                            <outputFile>${project.build.directory}/openapi-client.yaml</outputFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- OpenAPI Generator -->
             <plugin>
                 <groupId>org.openapitools</groupId>
@@ -96,11 +118,12 @@
                 <version>7.12.0</version>
                 <executions>
                     <execution>
+                        <phase>generate-sources</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/../openapi.yaml</inputSpec>
+                            <inputSpec>${project.build.directory}/openapi-client.yaml</inputSpec>
                             <generatorName>java</generatorName>
                             <library>native</library>
                             <apiPackage>com.assaabloy.bts.pbs.api.client.api</apiPackage>

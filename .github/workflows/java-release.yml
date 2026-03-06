@@ -39,6 +39,8 @@ jobs:
 
       - name: Build and test
         run: mvn clean verify
+        env:
+          PBS_API_KEY: ${{ secrets.PBS_API_KEY }}
 
       - name: Upload test results
         if: always()

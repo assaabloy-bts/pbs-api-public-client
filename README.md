@@ -23,30 +23,24 @@ implementation 'com.assaabloy.bts:pbs-api-public-client:1.0.0'
 ### Usage
 
 ```java
-import com.assaabloy.bts.pbs.api.client.ApiClient;
-import com.assaabloy.bts.pbs.api.client.api.HardwareApi;
-import com.assaabloy.bts.pbs.api.client.api.ManufacturersApi;
-import com.assaabloy.bts.pbs.api.client.api.PbsApi;
+import com.assaabloy.bts.pbs.api.client.PbsClient;
 import com.assaabloy.bts.pbs.api.client.model.*;
 
-ApiClient client = new ApiClient();
-client.setRequestInterceptor(builder ->
-    builder.header("Authorization", "Bearer " + token));
+// Default production URL
+PbsClient client = new PbsClient("your-api-key");
 
-ManufacturersApi manufacturersApi = new ManufacturersApi(client);
-Manufacturers manufacturers = manufacturersApi.getManufacturers(
-    null, null, null, null, null, null, null);
+// Or with a custom URL
+PbsClient client = new PbsClient("https://custom-url.example.com", "your-api-key");
 
-HardwareApi hardwareApi = new HardwareApi(client);
-HardwareItems items = hardwareApi.getHardwareItems(
-    "SA", null, null, null, null, null, null, null, null);
+Manufacturers manufacturers = client.getManufacturers("SA", null, null, null, null, null, null);
+HardwareItems items = client.getHardwareItems("SA", null, null, null, null, null, null, null, null);
 ```
 
-### Building
+### Building and Testing
 
 ```bash
 cd java
-mvn clean verify
+PBS_API_KEY=your-api-key mvn clean verify
 ```
 
 ## .NET
@@ -62,23 +56,22 @@ dotnet add package AssaAbloy.Bts.PbsApiClient
 ```csharp
 using AssaAbloy.Bts.PbsApiClient;
 
-var httpClient = new HttpClient();
-httpClient.BaseAddress = new Uri("https://public.api.aa-bts.com");
-httpClient.DefaultRequestHeaders.Authorization =
-    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+// Default production URL
+var client = new PbsClient("your-api-key");
 
-var client = new PbsApiClient(httpClient);
+// Or with a custom URL
+var client = new PbsClient("https://custom-url.example.com", "your-api-key");
 
-var manufacturers = await client.GetManufacturersAsync();
-var items = await client.GetHardwareItemsAsync(manufacturerId: "SA");
+var manufacturers = await client.GetManufacturersAsync(manufacturerId: "SA");
+var items = await client.GetHardwareItemsAsync("SA");
 ```
 
-### Building
+### Building and Testing
 
 ```bash
 cd dotnet
 dotnet build
-dotnet test
+PBS_API_KEY=your-api-key dotnet test
 ```
 
 ## Branching Strategy
@@ -104,6 +97,7 @@ git push origin v1.0.0
 
 | Secret | Description |
 |--------|-------------|
+| `PBS_API_KEY` | API key for running integration tests |
 | `MAVEN_CENTRAL_USERNAME` | Maven Central (Sonatype) username |
 | `MAVEN_CENTRAL_PASSWORD` | Maven Central (Sonatype) password |
 | `MAVEN_GPG_PRIVATE_KEY` | GPG private key for signing JARs |

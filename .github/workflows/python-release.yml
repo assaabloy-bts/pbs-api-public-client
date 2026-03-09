@@ -1,0 +1,84 @@
+name: Python - Build & Publish
+
+on:
+  push:
+    tags:
+      - '[0-9]*'
+    branches:
+      - develop
+      - 'release/**'
+      - 'hotfix/**'
+      - master
+  pull_request:
+    branches:
+      - develop
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: python
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install dependencies
+        run: pip install build pytest requests
+
+      - name: Build package
+        run: python -m build
+
+      - name: Install package
+        run: pip install dist/*.whl
+
+      - name: Test
+        run: pytest -v
+        env:
+          PBS_API_KEY: ${{ secrets.PBS_API_KEY }}
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-dist
+          path: python/dist/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Set version from tag
+        working-directory: python
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/}"
+          sed -i "s/^version = .*/version = \"$VERSION\"/" pyproject.toml
+
+      - name: Build package
+        working-directory: python
+        run: |
+          pip install build
+          python -m build
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: python/dist/*
+          generate_release_notes: true

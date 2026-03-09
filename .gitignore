@@ -6,6 +6,15 @@ java/.classpath
 java/.project
 java/.settings/
 
+# Python
+python/dist/
+python/build/
+python/*.egg-info/
+python/src/*.egg-info/
+__pycache__/
+*.pyc
+.pytest_cache/
+
 # .NET
 dotnet/**/bin/
 dotnet/**/obj/

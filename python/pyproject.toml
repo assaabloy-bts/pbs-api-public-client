@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pbs-api-client"
+version = "1.0.1"
+description = "PBS Public API Client - Python"
+readme = "README.md"
+license = "LicenseRef-Proprietary"
+requires-python = ">=3.10"
+authors = [
+    { name = "ASSA ABLOY BTS", email = "austin.derosso@assaabloy.com" },
+]
+dependencies = [
+    "requests>=2.28.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/assaabloy-bts/pbs-api-public-client"
+Repository = "https://github.com/assaabloy-bts/pbs-api-public-client"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pbs_api_client"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

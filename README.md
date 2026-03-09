@@ -1,6 +1,6 @@
 # PBS Public API Client
 
-Official API client libraries for the [ASSA ABLOY PBS Public API](https://public.api.aa-bts.com). Available for Java and .NET.
+Official API client libraries for the [ASSA ABLOY PBS Public API](https://public.api.aa-bts.com). Available for Java, .NET, and Python.
 
 ## Client Libraries
 
@@ -8,6 +8,7 @@ Official API client libraries for the [ASSA ABLOY PBS Public API](https://public
 |----------|---------|---------------|
 | Java | `com.assaabloy.bts:pbs-api-public-client` | [Java README](java/README.md) |
 | .NET | `AssaAbloy.Bts.PbsApiClient` | [.NET README](dotnet/README.md) |
+| Python | `pbs-api-client` | [Python README](python/README.md) |
 
 ## API Documentation
 

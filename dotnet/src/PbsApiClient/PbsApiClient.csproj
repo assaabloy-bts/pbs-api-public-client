@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>AssaAbloy.Bts.PbsApiClient</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Authors>ASSA ABLOY BTS</Authors>
     <Description>PBS Public API Client - .NET</Description>
     <RepositoryUrl>https://github.com/assaabloy-bts/pbs-api-public-client</RepositoryUrl>

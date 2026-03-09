@@ -8,8 +8,24 @@
 
 ## Installation
 
+Packages are published to [GitHub Packages](https://github.com/assaabloy-bts/pbs-api-public-client/packages).
+
+### Add the GitHub Packages NuGet source
+
 ```bash
-dotnet add package AssaAbloy.Bts.PbsApiClient
+dotnet nuget add source "https://nuget.pkg.github.com/assaabloy-bts/index.json" \
+    --name "github-assaabloy-bts" \
+    --username YOUR_GITHUB_USERNAME \
+    --password YOUR_GITHUB_TOKEN \
+    --store-password-in-clear-text
+```
+
+The token needs the `read:packages` scope. See [GitHub's guide](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry) for details.
+
+### Install the package
+
+```bash
+dotnet add package AssaAbloy.Bts.PbsApiClient --version 0.0.1
 ```
 
 Or add to your `.csproj`:

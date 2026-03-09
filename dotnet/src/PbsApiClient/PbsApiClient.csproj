@@ -11,7 +11,12 @@
     <RepositoryUrl>https://github.com/assaabloy-bts/pbs-api-public-client</RepositoryUrl>
     <Copyright>ASSA ABLOY</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="NSwag.MSBuild" Version="14.6.3">

@@ -35,8 +35,8 @@
 
     <distributionManagement>
         <repository>
-            <id>central</id>
-            <url>https://central.sonatype.com</url>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/assaabloy-bts/pbs-api-public-client</url>
         </repository>
     </distributionManagement>
 
@@ -210,42 +210,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!-- Central Publishing -->
-            <plugin>
-                <groupId>org.sonatype.central</groupId>
-                <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.10.0</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <publishingServerId>central</publishingServerId>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>release</id>
-            <build>
-                <plugins>
-                    <!-- GPG Signing -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.2.8</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>

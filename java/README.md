@@ -9,20 +9,61 @@ Java client library for the [ASSA ABLOY PBS Public API](https://public.api.aa-bt
 
 ## Installation
 
-Maven:
+Artifacts are published to [GitHub Packages](https://github.com/assaabloy-bts/pbs-api-public-client/packages).
+
+### Maven
+
+Add the GitHub Packages repository and dependency to your `pom.xml`:
 
 ```xml
-<dependency>
-    <groupId>com.assaabloy.bts</groupId>
-    <artifactId>pbs-api-public-client</artifactId>
-    <version>0.0.1</version>
-</dependency>
+<repositories>
+    <repository>
+        <id>github</id>
+        <url>https://maven.pkg.github.com/assaabloy-bts/pbs-api-public-client</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>com.assaabloy.bts</groupId>
+        <artifactId>pbs-api-public-client</artifactId>
+        <version>0.0.1</version>
+    </dependency>
+</dependencies>
 ```
 
-Gradle:
+Add server credentials to your `~/.m2/settings.xml`:
+
+```xml
+<servers>
+    <server>
+        <id>github</id>
+        <username>YOUR_GITHUB_USERNAME</username>
+        <password>YOUR_GITHUB_TOKEN</password>
+    </server>
+</servers>
+```
+
+The token needs the `read:packages` scope. See [GitHub's guide](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry) for details.
+
+### Gradle
+
+Add to your `build.gradle`:
 
 ```groovy
-implementation 'com.assaabloy.bts:pbs-api-public-client:0.0.1'
+repositories {
+    maven {
+        url = uri("https://maven.pkg.github.com/assaabloy-bts/pbs-api-public-client")
+        credentials {
+            username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
+            password = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
+        }
+    }
+}
+
+dependencies {
+    implementation 'com.assaabloy.bts:pbs-api-public-client:0.0.1'
+}
 ```
 
 ## Usage

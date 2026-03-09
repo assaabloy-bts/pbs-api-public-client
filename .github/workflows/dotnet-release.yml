@@ -88,8 +88,7 @@ jobs:
       - name: Push to GitHub Packages
         run: dotnet nuget push src/PbsApiClient/bin/Release/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/assaabloy-bts/index.json --skip-duplicate
 
-      - name: Create GitHub Release
+      - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: dotnet/src/PbsApiClient/bin/Release/*.nupkg
-          generate_release_notes: true

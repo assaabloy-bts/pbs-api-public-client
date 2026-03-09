@@ -20,7 +20,13 @@ dotnet nuget add source "https://nuget.pkg.github.com/assaabloy-bts/index.json" 
     --store-password-in-clear-text
 ```
 
-The token needs the `read:packages` scope. See [GitHub's guide](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry) for details.
+To create a token:
+
+1. Go to [GitHub Settings > Developer settings > Personal access tokens > Tokens (classic)](https://github.com/settings/tokens/new)
+2. Select the `read:packages` scope
+3. Click **Generate token**
+
+Note: Fine-grained tokens do not currently support GitHub Packages.
 
 ### Install the package
 

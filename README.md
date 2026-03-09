@@ -11,7 +11,8 @@ Official API client libraries for the [ASSA ABLOY PBS Public API](https://public
 
 ## API Documentation
 
-See the [OpenAPI specification](openapi.yaml) for full API documentation.
+- [OpenAPI specification](openapi.yaml)
+- [Swagger UI](https://public.api.aa-bts.com/q/swagger-ui/)
 
 ## Branching Strategy
 
@@ -25,11 +26,13 @@ This project follows gitflow:
 
 ## Releases
 
-Releases are automated via GitHub Actions. Only tagged commits publish to Maven Central and NuGet:
+Releases are automated via GitHub Actions using git flow. Tagged commits publish to GitHub Packages:
 
 ```bash
-git tag v1.0.0
-git push origin v1.0.0
+git flow release start 1.0.0
+# bump version on develop, then:
+git flow release finish 1.0.0
+git push origin master develop 1.0.0
 ```
 
 ### Required GitHub Secrets
@@ -37,11 +40,6 @@ git push origin v1.0.0
 | Secret | Description |
 |--------|-------------|
 | `PBS_API_KEY` | API key for running integration tests |
-| `MAVEN_CENTRAL_USERNAME` | Maven Central (Sonatype) username |
-| `MAVEN_CENTRAL_PASSWORD` | Maven Central (Sonatype) password |
-| `MAVEN_GPG_PRIVATE_KEY` | GPG private key for signing JARs |
-| `MAVEN_GPG_PASSPHRASE` | GPG key passphrase |
-| `NUGET_API_KEY` | NuGet.org API key |
 
 ---
 &#169;ASSA ABLOY

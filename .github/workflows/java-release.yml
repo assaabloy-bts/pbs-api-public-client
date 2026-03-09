@@ -3,7 +3,7 @@ name: Java - Build & Publish
 on:
   push:
     tags:
-      - 'v*'
+      - '[0-9]*'
     branches:
       - develop
       - 'release/**'
@@ -24,17 +24,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up JDK 21
+      - name: Set up JDK 25
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          java-version: '25'
+          distribution: 'corretto'
           cache: 'maven'
 
       - name: Set version from tag
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: startsWith(github.ref, 'refs/tags/')
         run: |
-          VERSION="${GITHUB_REF#refs/tags/v}"
+          VERSION="${GITHUB_REF#refs/tags/}"
           mvn versions:set -DnewVersion="$VERSION" -DgenerateBackupPoms=false
 
       - name: Build and test
@@ -52,7 +52,7 @@ jobs:
   publish:
     needs: build
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/')
     defaults:
       run:
         working-directory: java
@@ -60,11 +60,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up JDK 21
+      - name: Set up JDK 25
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          java-version: '25'
+          distribution: 'corretto'
           cache: 'maven'
           server-id: central
           server-username: MAVEN_USERNAME
@@ -74,7 +74,7 @@ jobs:
 
       - name: Set version from tag
         run: |
-          VERSION="${GITHUB_REF#refs/tags/v}"
+          VERSION="${GITHUB_REF#refs/tags/}"
           mvn versions:set -DnewVersion="$VERSION" -DgenerateBackupPoms=false
 
       - name: Publish to Maven Central

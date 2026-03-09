@@ -199,7 +199,8 @@ def test_get_hardware_option_by_id(client, manufacturer):
 
 def test_get_price_book_comparisons(client, manufacturer):
     try:
-        client.get_price_book_comparisons(manufacturer.abbr)
+        result = client.get_price_book_comparisons(manufacturer.abbr)
+        assert isinstance(result, str)
     except ApiException as e:
         # 504 Gateway Timeout is acceptable for this long-running comparison
         if e.status_code != 504:

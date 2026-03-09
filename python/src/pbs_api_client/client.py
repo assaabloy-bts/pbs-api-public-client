@@ -37,14 +37,17 @@ class PbsClient:
         self._base_url = base_url.rstrip("/")
 
     def _get(self, path: str, params: dict | None = None) -> dict | list:
+        resp = self._request(path, params)
+        return resp.json()
+
+    def _request(self, path: str, params: dict | None = None) -> requests.Response:
         url = f"{self._base_url}{path}"
-        # Remove None values from params
         if params:
             params = {k: v for k, v in params.items() if v is not None}
         resp = self._session.get(url, params=params)
         if not resp.ok:
             raise ApiException(resp.status_code, resp.text)
-        return resp.json()
+        return resp
 
     # -- Hardware Attributes --
 
@@ -255,11 +258,13 @@ class PbsClient:
         manufacturer_id: str,
         *,
         future_price_book: bool | None = None,
-    ) -> None:
-        self._get("/priceBookComparisonTool", {
+    ) -> str:
+        """Returns CSV data comparing price books."""
+        resp = self._request("/priceBookComparisonTool", {
             "manufacturerId": manufacturer_id,
             "futurePriceBook": future_price_book,
         })
+        return resp.text
 
     def get_price_books(
         self,

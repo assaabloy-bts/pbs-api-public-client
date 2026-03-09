@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pbs-api-client"
-version = "1.0.2"
+version = "1.0.3"
 description = "PBS Public API Client - Python"
 readme = "README.md"
 license = "LicenseRef-Proprietary"

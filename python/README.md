@@ -8,18 +8,32 @@ Python client library for the [ASSA ABLOY PBS Public API](https://public.api.aa-
 
 ## Installation
 
-Packages are published as [GitHub Release](https://github.com/assaabloy-bts/pbs-api-public-client/releases) assets.
-
-### Install from GitHub
-
-```bash
-pip install pbs-api-client --find-links https://github.com/assaabloy-bts/pbs-api-public-client/releases/latest/download/
-```
-
-Or install directly from source:
+### pip
 
 ```bash
 pip install "pbs-api-client @ git+https://github.com/assaabloy-bts/pbs-api-public-client.git#subdirectory=python"
+```
+
+### uv
+
+```bash
+uv add "pbs-api-client @ git+https://github.com/assaabloy-bts/pbs-api-public-client.git#subdirectory=python"
+```
+
+### pyproject.toml
+
+```toml
+dependencies = [
+    "pbs-api-client @ git+https://github.com/assaabloy-bts/pbs-api-public-client.git#subdirectory=python",
+]
+```
+
+### From release assets
+
+Wheels are also attached to [GitHub Releases](https://github.com/assaabloy-bts/pbs-api-public-client/releases):
+
+```bash
+pip install pbs-api-client --find-links https://github.com/assaabloy-bts/pbs-api-public-client/releases/latest/download/
 ```
 
 ## Usage

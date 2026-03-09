@@ -1,6 +1,6 @@
 # PBS Public API Client
 
-Official API client libraries for the [ASSA ABLOY PBS Public API](https://public.api.aa-bts.com). Available for Java, .NET, and Python.
+Official API client libraries for the [ASSA ABLOY PBS Public API](https://public.api.aa-bts.com/q/swagger-ui/). Available for Java, .NET, and Python.
 
 ## Client Libraries
 
